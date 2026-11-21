@@ -1,0 +1,151 @@
+/* NMS · interações, resposta instantânea e tela cheia
+   Os estilos de cada bloco continuam no index.html; aqui ficam só os estados
+   (passar o mouse, tocar, aberto, ativo), o menu do celular e os ajustes de tela. */
+
+:root { --hdr: 74px; --azul: #1F6FA8; --azul-claro: #7CC8F2; --rapido: 120ms; }
+
+html { scroll-behavior: auto; -webkit-text-size-adjust: 100%; }
+body { overflow-x: clip; }
+body { min-height: 100svh; }
+a, button, summary, .card, .zoom { touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+img { max-width: 100%; }
+
+/* as seções param logo abaixo do topo fixo quando você clica numa aba */
+section[id] { scroll-margin-top: var(--hdr); }
+
+/* barra de progresso da leitura */
+#progresso { position: fixed; top: 0; left: 0; height: 3px; width: 100%; z-index: 60;
+  background: var(--azul-claro); transform-origin: 0 50%; transform: scaleX(0); pointer-events: none; }
+
+/* topo */
+.site-header { transition: box-shadow var(--rapido) ease-out; padding-top: env(safe-area-inset-top); -webkit-backdrop-filter: saturate(180%) blur(12px); backdrop-filter: saturate(180%) blur(12px); }
+.site-header.rolou { box-shadow: 0 6px 24px rgba(10,10,10,0.08); }
+.logo { cursor: pointer; }
+.logo:active { opacity: 0.6; }
+
+.nav-link { position: relative; padding: 8px 2px; transition: color var(--rapido) ease-out; }
+.nav-link::after { content: ""; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px; border-radius: 2px;
+  background: var(--azul); transform: scaleX(0); transform-origin: 0 50%; transition: transform var(--rapido) ease-out; }
+.nav-link:hover, .nav-link.ativo { color: #0A0A0A !important; }
+.nav-link:hover::after, .nav-link.ativo::after { transform: scaleX(1); }
+.nav-link:active { color: var(--azul) !important; }
+
+/* botões: resposta imediata ao toque */
+.btn { position: relative; overflow: hidden; cursor: pointer; user-select: none;
+  transition: transform var(--rapido) ease-out, box-shadow var(--rapido) ease-out, background-color var(--rapido) ease-out; }
+.btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(10,10,10,0.18); }
+.btn:active { transform: scale(0.96); box-shadow: none; transition-duration: 0s; }
+.btn-ghost:hover { background: #FFFFFF; border-color: #0A0A0A !important; }
+.btn:focus-visible, .nav-link:focus-visible, .logo:focus-visible, summary:focus-visible, .menu-btn:focus-visible, .wa-float:focus-visible {
+  outline: 3px solid var(--azul-claro); outline-offset: 3px; }
+.onda { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.45); transform: scale(0);
+  animation: onda 450ms ease-out forwards; pointer-events: none; }
+.btn-ghost .onda { background: rgba(31,111,168,0.18); }
+@keyframes onda { to { transform: scale(2.6); opacity: 0; } }
+
+/* cartões */
+.card { transition: transform var(--rapido) ease-out, box-shadow var(--rapido) ease-out, border-color var(--rapido) ease-out; }
+.card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(10,10,10,0.10); }
+.card:active { transform: translateY(-1px) scale(0.99); transition-duration: 0s; }
+.card-dark:hover { box-shadow: 0 18px 40px rgba(10,10,10,0.35); }
+.card-svc:hover { border-left-color: var(--azul) !important; }
+.card-step span:first-child { transition: color var(--rapido) ease-out; }
+.card-step:hover span:first-child { color: var(--azul) !important; }
+.row > span, .feat > svg { transition: transform var(--rapido) ease-out; }
+.row:hover > span, .feat:hover > svg { transform: scale(1.12); }
+.stat { border-radius: 14px; padding: 10px 6px; transition: background-color var(--rapido) ease-out, transform var(--rapido) ease-out; }
+.stat:hover { background: #161616; transform: translateY(-2px); }
+
+/* telas do sistema: clique para ampliar */
+.shot { transition: transform var(--rapido) ease-out, box-shadow var(--rapido) ease-out; }
+.shot:hover { transform: translateY(-4px); }
+.zoom { cursor: zoom-in; }
+.lightbox { position: fixed; inset: 0; z-index: 80; background: rgba(10,10,10,0.9); display: flex; align-items: center; justify-content: center;
+  padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom)); cursor: zoom-out; }
+.lightbox[hidden] { display: none; }
+.lightbox img { max-width: 100%; max-height: 100%; border-radius: 12px; box-shadow: 0 30px 80px rgba(0,0,0,0.5); }
+.lb-close { position: absolute; top: max(12px, env(safe-area-inset-top)); right: 12px; width: 48px; height: 48px; border: 0; border-radius: 50%;
+  background: #FFFFFF; color: #0A0A0A; font-size: 30px; line-height: 1; cursor: pointer; }
+.lb-close:active { transform: scale(0.92); }
+
+/* perguntas frequentes */
+.faq { transition: border-color var(--rapido) ease-out, box-shadow var(--rapido) ease-out; }
+.faq:hover { border-color: #B4C0CC !important; }
+.faq[open] { border-color: var(--azul) !important; box-shadow: 0 10px 28px rgba(31,111,168,0.10); }
+.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 16px; user-select: none; }
+.faq summary::after { content: ""; flex: none; width: 10px; height: 10px; margin-right: 4px; border-right: 2.5px solid currentColor; border-bottom: 2.5px solid currentColor;
+  transform: translateY(-3px) rotate(45deg); transition: transform var(--rapido) ease-out; }
+.faq[open] summary::after { transform: translateY(3px) rotate(225deg); }
+.faq[open] summary { color: var(--azul); }
+.faq summary:active { opacity: 0.6; }
+
+/* destaque rápido na seção que você abriu pelo menu */
+.chegou h2 { animation: chegou 700ms ease-out; }
+@keyframes chegou { 0% { color: var(--azul); } 100% { color: inherit; } }
+
+/* botão de WhatsApp sempre à mão */
+.wa-float { position: fixed; right: max(18px, env(safe-area-inset-right)); bottom: max(18px, env(safe-area-inset-bottom)); z-index: 50;
+  display: inline-flex; align-items: center; gap: 10px; height: 58px; padding: 0 22px 0 16px; border-radius: 999px;
+  background: #25D366; color: #FFFFFF !important; text-decoration: none; font-weight: 700; font-size: 16px;
+  box-shadow: 0 12px 30px rgba(10,10,10,0.25);
+  opacity: 0; transform: translateY(16px); pointer-events: none; transition: opacity var(--rapido) ease-out, transform var(--rapido) ease-out; }
+.wa-float.visivel { opacity: 1; transform: none; pointer-events: auto; }
+.wa-float:hover { transform: translateY(-2px); }
+.wa-float:active { transform: scale(0.94); transition-duration: 0s; }
+
+/* menu do celular */
+.menu-btn { display: none; width: 48px; height: 48px; border: 1px solid #E1E5EA; border-radius: 14px; background: #FFFFFF;
+  flex-direction: column; align-items: center; justify-content: center; gap: 5px; cursor: pointer; padding: 0; }
+.menu-btn span { display: block; width: 20px; height: 2px; border-radius: 2px; background: #0A0A0A; transition: transform var(--rapido) ease-out, opacity var(--rapido) ease-out; }
+.menu-btn:active { transform: scale(0.92); }
+.menu-btn[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.menu-btn[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+.menu-btn[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* primeira tela ocupa a tela inteira do aparelho */
+.hero { display: flex; }
+.hero-in { width: 100%; min-height: calc(100svh - var(--hdr)); box-sizing: border-box; justify-content: center;
+  padding-top: clamp(40px, 8vh, 120px) !important; padding-bottom: clamp(40px, 8vh, 100px) !important; }
+
+/* telas grandes: o conteúdo aproveita a largura */
+@media (min-width: 1500px) {
+  [style*="max-width: 1240px"] { max-width: min(1440px, 92vw) !important; }
+  .hero-in { max-width: 1240px !important; }
+}
+
+/* celular */
+@media (max-width: 760px) {
+  .hdr-in { flex-wrap: nowrap !important; padding: 10px 16px !important; padding-left: max(16px, env(safe-area-inset-left)) !important; padding-right: max(16px, env(safe-area-inset-right)) !important; }
+  .menu-btn { display: inline-flex; }
+  .nav { position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; align-items: stretch !important; gap: 0 !important;
+    padding: 8px 16px 18px; background: #FFFFFF; border-bottom: 1px solid #E6E8EB; box-shadow: 0 18px 30px rgba(10,10,10,0.10);
+    display: none !important; }
+  .nav.aberto { display: flex !important; }
+  .nav-link { padding: 16px 4px; font-size: 18px !important; border-bottom: 1px solid #F0F2F4; }
+  .nav-link::after { display: none; }
+  .nav-link.ativo { color: var(--azul) !important; }
+  .nav .btn { justify-content: center; margin-top: 14px; min-height: 54px !important; }
+  [style*="padding: 110px 24px"] { padding: 72px 20px !important; }
+  [style*="padding: 120px 24px;"] { padding: 80px 20px !important; }
+  .hero-in { padding: 28px 20px !important; gap: 18px !important; }
+  .hero-in > span { font-size: 12px !important; letter-spacing: 0.14em !important; }
+  .hero-in h1 { font-size: clamp(34px, 10vw, 44px) !important; }
+  .hero-in p { font-size: 17px !important; line-height: 1.5 !important; }
+  .hero-in > div { gap: 10px !important; }
+  .hero-in .btn { min-height: 52px !important; font-size: 16px !important; }
+  .hero-in .btn { width: 100%; justify-content: center; }
+  .hero-in > div { width: 100%; }
+  [style*="padding: 44px;"] { padding: 32px 24px !important; }
+  .wa-float span { display: none; }
+  .wa-float { padding: 0; width: 58px; justify-content: center; }
+  .card:hover, .shot:hover, .btn:hover { transform: none; }
+}
+
+@media (hover: none) {
+  .card:active { transform: scale(0.985); }
+  .stat:active { background: #161616; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
