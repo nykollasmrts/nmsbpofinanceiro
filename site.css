@@ -146,6 +146,15 @@ section[id] { scroll-margin-top: var(--hdr); }
   .stat:active { background: #161616; }
 }
 
+/* princípios: missão, visão e valores */
+.principio > span:first-child { transition: transform var(--rapido) ease-out; }
+.principio:hover > span:first-child { transform: scale(1.1) rotate(-4deg); }
+.valor { transition: padding-left var(--rapido) ease-out; }
+.valor:last-child { border-bottom: 0 !important; padding-bottom: 0 !important; }
+.valor strong { transition: color var(--rapido) ease-out; }
+.valor:hover { padding-left: 6px; }
+.valor:hover strong { color: var(--azul); }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
